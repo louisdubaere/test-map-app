@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import MapComponent from './components/Map';
+import SearchBox from './components/SearchBox';
 
 function App() {
   const [selectedParcel, setSelectedParcel] = useState(null);
+  const [mapInstance, setMapInstance] = useState(null);
 
   return (
     <div className="app-container">
@@ -43,6 +45,11 @@ function App() {
                     <span>Gewestplan: {selectedParcel.gewestplan || 'Onbekend'}</span>
                   </div>
 
+                    <div className="mock-ai-status">
+                      <span className={`status-dot ${selectedParcel.bpa_rup && selectedParcel.bpa_rup.includes('Geen') ? 'warning' : 'success'}`}></span>
+                      <span>RUP / BPA: {selectedParcel.bpa_rup || 'Geen specifieke RUP/BPA overlappend'}</span>
+                    </div>
+
                   <div className="mock-ai-status">
                     <span className={`status-dot ${selectedParcel.watertoets && selectedParcel.watertoets.includes('Niet') ? 'success' : 'warning'}`}></span>
                     <span>Watertoets: {selectedParcel.watertoets || 'Onbekend'}</span>
@@ -60,8 +67,9 @@ function App() {
       </div>
 
       {/* Main Map Area */}
+      <SearchBox map={mapInstance} />
       <div className="map-container">
-        <MapComponent onParcelSelect={setSelectedParcel} />
+        <MapComponent onParcelSelect={setSelectedParcel} selectedParcel={selectedParcel} setMap={setMapInstance} />
       </div>
     </div>
   );
